@@ -182,9 +182,6 @@ export default {
       console.log(e);
       this.$router.push(e);
     },
-    add_school() {
-      this.$router.push({ path: "/add_school" });
-    },
     gettjr() {
       this.$axios
         .post("/User/referrerInfo")

@@ -29,40 +29,12 @@
   }
 }
 
-.el-form-item__label {
-  width: 30%;
-  height: 100%;
-  line-height: 3rem;
-  padding: 0;
-}
-
-.el-form {
-  height: 5rem;
+.select_school {
   width: 100%;
-  padding: 1rem;
+  height: 3rem;
+  padding: 0.5rem;
   box-sizing: border-box;
-  .el-form-item {
-    width: 100%;
-    height: 100%;
-    margin-bottom: 0;
-
-    .el-form-item__content {
-      width: 70%;
-      height: 100%;
-    }
-  }
-  .layui-input-inline {
-    float: left;
-    width: 70%;
-    margin: 0;
-    .select {
-      border: none;
-      width: 100%;
-      height: 2rem;
-      border-radius: 0.3rem;
-      padding: 0.5rem;
-    }
-  }
+  font-size: 0.75rem;
 }
 
 .qued {
@@ -86,27 +58,27 @@
       <div class="head_back_box">
         <div class="head_back" @click="back"></div>
       </div>
-      <div class="head_title">添加学校</div>
+      <div class="head_title">修改学校</div>
       <div class="head_home" @click="home"></div>
     </div>
-
-    <el-form ref="form" :model="form" label-width="80px">
-      <el-form-item label="选择学校：">
-        <el-select
-          v-model="form.region"
-          @change="xzschool"
-          placeholder="请选择学校："
+    <div class="select_school">
+      选择学校：
+      <el-select
+        v-model="value"
+        filterable
+        placeholder="请选择学校："
+        @change="xzschool"
+      >
+        <el-option
+          v-for="item in schoolList[0]"
+          :key="item.id"
+          :label="item.name"
+          :value="item.id"
+          
         >
-          <el-option
-            v-for="(item, index) in schoolList[0]"
-            :key="index"
-            :label="item.name"
-            :value="item.id"
-            >{{ item.name }}</el-option
-          >
-        </el-select>
-      </el-form-item>
-    </el-form>
+        </el-option>
+      </el-select>
+    </div>
 
     <div class="qued"><a href="###" @click="qued">保存学校</a></div>
   </div>
@@ -117,9 +89,8 @@ import $ from "jquery";
 export default {
   data() {
     return {
-      schoolList: [],
-      form: { region: "" },
-      xz_school: "",
+      value: "",
+      schoolList: [], // 学校列表
     };
   },
   methods: {
@@ -133,22 +104,18 @@ export default {
       this.$axios
         .post("/User/getSchool")
         .then((res) => {
-          // console.log(res);
+          // console.log(res.data.data);
           this.schoolList.push(res.data.data);
-          console.log(this.schoolList);
+          // console.log(this.schoolList);
         })
         .catch((err) => {
           console.log(err);
         });
     },
     xzschool(xid) {
-      console.log(xid);
-      let obj = {};
-      obj = this.schoolList[0].find((item) => {
-        return item.id === xid;
-      });
-      console.log(obj.id);
-      this.xz_school = obj.id;
+      // console.log(xid);
+      this.xz_school = xid
+      console.log(this.xz_school);
     },
     qued() {
       this.$router.push({ path: "/setup", query: { id: this.xz_school } });

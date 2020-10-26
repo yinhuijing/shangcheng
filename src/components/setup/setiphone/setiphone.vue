@@ -65,7 +65,7 @@ export default {
             phone: phone,
             code: code,
           })
-          .then(function (res) {
+          .then((res) => {
             console.log(res);
             // 获取验证码
             if (res.data.code == 200) {
@@ -80,7 +80,7 @@ export default {
     },
     getCode() {
       var phone = this.phone;
-      var myreg = /^[1][3,4,5,7,8][0-9]{9}$/;
+      var myreg = /^[1][3,4,5,7,8][0-9]{9}$/; // 验证手机号
       if (!myreg.test(phone)) {
         this.$toast("请填写正确的手机号");
         return false;
