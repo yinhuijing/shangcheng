@@ -46,7 +46,12 @@
   button {
     border: none;
     // background-color: red;
-    background-image: linear-gradient(to right, #ff3200 0%, #ff6d34 35%,#0dcaef 100%);
+    background-image: linear-gradient(
+      to right,
+      #ff3200 0%,
+      #ff6d34 35%,
+      #0dcaef 100%
+    );
     border-radius: 0.7rem;
     padding: 0.3rem;
     width: 5rem;
@@ -115,28 +120,10 @@
           </div>
         </div>
       </form>
-
-      <!-- <div class="loginpwd-li">
-        <input
-          type="password"
-          v-model="password1"
-          placeholder="请输入初始密码"
-        />
-      </div>
-      <div class="loginpwd-li">
-        <input type="password" v-model="password2" placeholder="请输入新密码" />
-      </div>
-      <div class="loginpwd-li">
-        <input
-          type="password"
-          v-model="password3"
-          placeholder="再次输入新密码"
-        />
-      </div> -->
     </div>
 
-    <div class="loginpwd-btn" @click="paypwd">
-      <button>保存</button>
+    <div class="loginpwd-btn">
+      <button @click="paypwd">保存</button>
     </div>
   </div>
 </template>
@@ -173,14 +160,15 @@ export default {
         // this.$toast("提交信息");
         this.$axios
           .post("/User/updatePwd", {
-            password1: password1,
-            password2: password2,
-            password3: password3,
+            old_paypwd: password1,
+            new_paypwd: password2,
+            new_requery_paypwd: password3,
           })
-          .then(function (res) {
+          .then((res) => {
+            console.log(res.data.code);
             if (res.data.code == 200) {
               this.$toast("修改成功");
-              that.$router.go(-1); //返回上一层
+              this.$router.go(-1); //返回上一层
             } else {
               this.$toast(res.data.message);
             }
