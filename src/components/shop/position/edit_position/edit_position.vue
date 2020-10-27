@@ -71,11 +71,11 @@ export default {
     },
     // 点击保存
     onSave() {
-      Toast("save");
+      this.$toast("save");
     },
     // 点击删除
     onDelete() {
-      Toast("delete");
+      this.$toast("delete");
     },
     onChangeDetail(val) {
       if (val) {
