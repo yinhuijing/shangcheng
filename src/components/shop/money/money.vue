@@ -126,22 +126,22 @@
 
     <div class="money_list">
       <ul>
-        <li>
+        <li @click="go_yuan">
           <div class="left_box">
             <img src="../../../assets/img/yemx.png" alt />
             <a href="###">元明细</a>
           </div>
           <div class="right_box">
-            <a href="/yue"><img src="../../../assets/img/8.png" alt /></a>
+            <a href="###"><img src="../../../assets/img/8.png" alt /></a>
           </div>
         </li>
-        <li>
+        <li @click="go_jifen">
           <div class="left_box">
             <img src="../../../assets/img/jfmx.png" alt />
             <a href="###">积分明细</a>
           </div>
           <div class="right_box">
-            <a href="/jifen"><img src="../../../assets/img/8.png" alt /></a>
+            <a href="###"><img src="../../../assets/img/8.png" alt /></a>
           </div>
         </li>
       </ul>
@@ -160,6 +160,12 @@ export default {
     },
     go_back() {
       this.$router.go(-1);
+    },
+    go_jifen() {
+      this.$router.push({ path: "/jifen" });
+    },
+    go_yuan() {
+      this.$router.push({ path: "/yue" });
     },
   },
 };

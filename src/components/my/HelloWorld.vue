@@ -212,8 +212,9 @@
     }
     .qd_form {
       width: 100%;
-      height: 6.5rem;
-      margin-top: 0.5rem;
+      height: calc(100% - 1.5rem);
+      padding-top: 0.5rem;
+      box-sizing: border-box;
       ul {
         height: 100%;
         li {
@@ -221,13 +222,14 @@
           float: left;
           width: calc(100% / 7);
           height: 4rem;
-          padding-left: 0.2rem;
-          box-sizing: border-box;
           &:first-child {
             margin-left: 0;
           }
         }
         .qd_num {
+          width: 2.5rem;
+          height: 2.5rem;
+          margin: 0 auto;
           .qiandao_num {
             display: block;
             width: 100%;
@@ -235,11 +237,14 @@
             border: 1px solid #eeeeee;
             border-radius: 50%;
             text-align: center;
-            line-height: 2.4rem;
+            line-height: 2.5rem;
+            box-sizing: border-box;
           }
         }
         .qd_js {
-          margin-top: 0.35rem;
+          height: 1.5rem;
+          line-height: 1.5rem;
+          // margin-top: 0.35rem;
         }
       }
     }

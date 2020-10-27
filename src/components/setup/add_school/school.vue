@@ -8,15 +8,15 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  .head_back_box {
-    width: 0.7198rem;
-    .head_back {
-      width: 0.39975845rem;
-      height: 0.7198rem;
-      background: url(../../../assets/img/back3.png) no-repeat;
-      background-size: 100% 100%;
-    }
-  }
+  // .head_back_box {
+  //   width: 0.7198rem;
+  //   .head_back {
+  //     width: 0.39975845rem;
+  //     height: 0.7198rem;
+  //     background: url(../../../assets/img/back3.png) no-repeat;
+  //     background-size: 100% 100%;
+  //   }
+  // }
   .head_title {
     flex: 1;
     text-align: center;
@@ -55,9 +55,9 @@
 <template>
   <div>
     <div class="header">
-      <div class="head_back_box">
+      <!-- <div class="head_back_box">
         <div class="head_back" @click="back"></div>
-      </div>
+      </div> -->
       <div class="head_title">修改学校</div>
       <div class="head_home" @click="home"></div>
     </div>
@@ -70,17 +70,18 @@
         @change="xzschool"
       >
         <el-option
-          v-for="item in schoolList[0]"
+          v-for="item in schoolList"
           :key="item.id"
           :label="item.name"
           :value="item.id"
-          
         >
         </el-option>
       </el-select>
     </div>
 
     <div class="qued"><a href="###" @click="qued">保存学校</a></div>
+
+    <div @click="aa">啊啊啊啊啊啊啊啊</div>
   </div>
 </template>
 
@@ -91,30 +92,34 @@ export default {
     return {
       value: "",
       schoolList: [], // 学校列表
+      // xz_school:"" // 学校id
     };
   },
   methods: {
-    back() {
-      this.$router.go(-1);
-    },
+    // back() {
+    //   this.$router.go(-1);
+    // },
     home() {
-      this.$router.push({ path: "/shop" });
+      this.$router.push({ path: "/index" });
     },
     schoolData() {
       this.$axios
         .post("/User/getSchool")
         .then((res) => {
           // console.log(res.data.data);
-          this.schoolList.push(res.data.data);
-          // console.log(this.schoolList);
+          this.schoolList = res.data.data;
+          console.log(this.schoolList);
         })
         .catch((err) => {
           console.log(err);
         });
     },
     xzschool(xid) {
-      // console.log(xid);
-      this.xz_school = xid
+      console.log(xid);
+      this.xz_school = xid;
+      console.log(this.xz_school);
+    },
+    aa() {
       console.log(this.xz_school);
     },
     qued() {

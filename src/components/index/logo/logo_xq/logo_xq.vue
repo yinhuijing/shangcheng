@@ -50,7 +50,7 @@
         }
       }
       .logo_text {
-        padding: 0.5rem 0 0 1rem;
+        padding: 0 0 0 0.5rem;
         box-sizing: border-box;
         flex: 1.5;
         text-align: left;
@@ -74,7 +74,7 @@
       text-align: left;
       padding-top: 0.5rem;
       box-sizing: border-box;
-      p{
+      p {
         height: 1.5rem;
         line-height: 1.5rem;
         font-size: 0.85rem;

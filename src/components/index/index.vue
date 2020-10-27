@@ -159,6 +159,11 @@ a {
       .xz_xq {
         color: red;
       }
+      .xz_title {
+        overflow: hidden; //超出的文本隐藏
+        text-overflow: ellipsis; //溢出用省略号显示
+        white-space: nowrap; //溢出不换行
+      }
     }
   }
   .xz_bottom,
@@ -301,7 +306,10 @@ a {
                   <div class="logo_tel" style="height: 1rem; line-height: 1rem">
                     联系电话：13859748516
                   </div>
-                  <div class="logo_xq" style="height: 1rem; line-height: 1rem">
+                  <div
+                    class="logo_xq"
+                    style="height: 1rem; line-height: 1rem; text-align: right"
+                  >
                     <a href="###" @click="pinpai_xq(litem.id)">查看详情</a>
                   </div>
                 </div>

@@ -59,15 +59,6 @@
     }
   }
 }
-
-// .van-uploader__upload {
-//   width: 0.93rem;
-//   height: 0.93rem;
-// }
-// .set-up-right input {
-//   border: 0;
-//   text-align: right;
-// }
 </style>
 
 <template>
@@ -183,10 +174,11 @@ export default {
       this.$router.push(e);
     },
     gettjr() {
+      // console.log(this.sid);
       this.$axios
         .post("/User/referrerInfo")
         .then((res) => {
-          // console.log(res);
+          // console.log(res.data.data);
           this.tjr = res.data.data.nickname;
           // console.log(this.tjr)
         })
@@ -194,24 +186,25 @@ export default {
           console.log(err);
         });
     },
-    getschool() {
-      this.$axios
-        .post("/User/getoneSchool", { school: this.sid })
-        .then((res) => {
-          console.log(res.data.data[0].name);
-          this.school = res.data.data[0].name;
-        })
-        .catch((err) => {
-          console.log(err);
-        });
-    },
+    // getschool() {
+    //   this.$axios
+    //     .post("/User/getoneSchool", { school: this.sid })
+    //     .then((res) => {
+    //       console.log(res);
+    //       console.log(res.data.data[0].name);
+    //       this.school = res.data.data[0].name;
+    //     })
+    //     .catch((err) => {
+    //       console.log(err);
+    //     });
+    // },
   },
   created() {
     this.sid = this.$route.query.id;
   },
   mounted() {
     this.gettjr();
-    this.getschool();
+    // this.getschool();
   },
 };
 </script>

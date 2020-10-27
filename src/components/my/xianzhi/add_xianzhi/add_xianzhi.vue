@@ -62,7 +62,7 @@
     .layui-elem-field {
       border: none;
       height: 1rem;
-      margin: 0.5rem;
+      margin: 0.3rem;
       margin-left: 0.3rem;
       legend {
         font-size: 0.7rem;
@@ -85,6 +85,8 @@
           width: 100%;
           height: 5rem;
           border: 1px solid black;
+          padding: 0.5rem;
+          box-sizing: border-box;
         }
       }
     }
@@ -106,7 +108,7 @@
     </div>
 
     <div class="form_box">
-      <form class="layui-form" action>
+      <form class="layui-form" action="">
         <div class="layui-form-item">
           <label class="layui-form-label">物品名称：</label>
           <div class="layui-input-block">
@@ -115,18 +117,34 @@
               name="title"
               required
               lay-verify="required"
-              placeholder="请输入名称"
+              placeholder="请输入闲置物品名称："
               autocomplete="off"
               class="layui-input"
             />
           </div>
         </div>
 
+        <div class="layui-form-item">
+          <label class="layui-form-label">闲置类型：</label>
+          <div class="layui-input-block">
+            <select name="city" lay-verify="required">
+              <!-- <option value=""></option> -->
+              <option
+                v-for="(item, index) in typeList"
+                :key="index"
+                value="index"
+              >
+                {{ item }}
+              </option>
+            </select>
+          </div>
+        </div>
+
         <fieldset
           class="layui-elem-field layui-field-title"
-          style="margin-top: 0.5rem"
+          style="margin-top: 30px"
         >
-          <legend>上传多张图片：</legend>
+          <legend>上传多张图片</legend>
         </fieldset>
 
         <div class="layui-upload">
@@ -139,19 +157,45 @@
             <div class="layui-upload-list" id="demo2"></div>
           </blockquote>
         </div>
+
+        <!-- <div class="layui-form-item">
+          <label class="layui-form-label">闲置物品详情：</label>
+          <div class="layui-input-inline uploadHeadImage">
+            <div class="layui-upload-drag" id="headImg">
+              <i class="layui-icon"></i>
+              <p>点击上传图片，或将图片拖拽到此处</p>
+            </div>
+          </div>
+          <div class="layui-input-inline">
+            <div class="layui-upload-list">
+              <img
+                class="layui-upload-img headImage"
+                src="http://t.cn/RCzsdCq"
+                id="demo1"
+              />
+              <p id="demoText"></p>
+            </div>
+          </div>
+        </div> -->
+
         <div class="layui-form-item layui-form-text">
           <label class="layui-form-label">闲置理由：</label>
           <div class="layui-input-block">
             <textarea
               name="desc"
-              placeholder="请输入内容"
+              placeholder="请输入闲置理由："
               class="layui-textarea"
             ></textarea>
           </div>
         </div>
         <div class="layui-form-item">
           <div class="layui-input-block">
-            <button class="layui-btn" lay-submit lay-filter="formDemo">
+            <button
+              type="submit"
+              class="layui-btn"
+              lay-submit
+              lay-filter="formDemo"
+            >
               立即提交
             </button>
             <button type="reset" class="layui-btn layui-btn-primary">
@@ -165,46 +209,108 @@
 </template>
 
 <script>
+import $ from "jquery";
 export default {
   data() {
-    return {};
+    return {
+      add_xianzhi: {}, // 闲置物品名称，类型，理由
+      typeList: {},
+      fileList: [],
+    };
   },
   methods: {
     back() {
       this.$router.go(-1);
     },
     home() {
-      this.$router.push({ path: "/shop" });
+      this.$router.push({ path: "/index" });
     },
-    mounted() {
-      layui.use(["form,upload"], () => {
-        var form = layui.form;
-        var $ = layui.jquery,
-          upload = layui.upload;
-        //多图片上传
-        upload.render({
-          elem: "#test2",
-          url: "https://httpbin.org/post", //改成您自己的上传接口
-          multiple: true,
-          before: function (obj) {
-            //预读本地文件示例，不支持ie8
-            obj.preview(function (index, file, result) {
-              $("#demo2").append(
-                '<img src="' +
-                  result +
-                  '" alt="' +
-                  file.name +
-                  '" class="layui-upload-img">'
-              );
-            });
-          },
-          done: function (res) {
-            //上传完毕
-          },
-        });
-        layer.msg("Hello World");
+    typedata() {
+      this.$axios.post("/Idle/typeIdle").then((res) => {
+        // console.log(res.data.data);
+        this.typeList = res.data.data;
+        console.log(this.typeList);
       });
     },
+  },
+  created() {
+    layui.use(["form", "upload", "layer"], function () {
+      var $ = layui.$,
+        // element = layui.element,
+        layer = layui.layer,
+        upload = layui.upload,
+        form = layui.form;
+      //监听提交
+      form.on("submit(formDemo)", function (data) {
+        this.add_xianzhi = JSON.stringify(data.field);
+        console.log(this.add_xianzhi);
+        return false;
+      });
+
+      // var uploadInst = upload.render({
+      //   elem: "#headImg",
+      //   url: "/User/uploadImg",
+      //   size: 500,
+      //   before: function (obj) {
+      //     //预读本地文件示例，不支持ie8
+      //     obj.preview(function (index, file, result) {
+      //       $("#demo1").attr("src", result); //图片链接（base64）
+      //     });
+      //   },
+      //   done: function (res) {
+      //     //如果上传失败
+      //     if (res.code > 0) {
+      //       return layer.msg("上传失败");
+      //     }
+      //     //上传成功
+      //     //打印后台传回的地址: 把地址放入一个隐藏的input中, 和表单一起提交到后台, 此处略..
+      //     /*   console.log(res.data.src);*/
+      //     window.parent.uploadHeadImage(res.data.src);
+      //     var demoText = $("#demoText");
+      //     demoText.html('<span style="color: #8f8f8f;">上传成功!!!</span>');
+      //   },
+      //   error: function () {
+      //     //演示失败状态，并实现重传
+      //     var demoText = $("#demoText");
+      //     demoText.html(
+      //       '<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>'
+      //     );
+      //     demoText.find(".demo-reload").on("click", function () {
+      //       uploadInst.upload();
+      //     });
+      //   },
+      // });
+      // element.init();
+
+      // 多图片上传
+      upload.render({
+        elem: "#test2",
+        url: "/User/uploadImg", //自己的上传接口
+        methods: "post",
+        // data: { file:this.file }, // 接口参数
+        multiple: true,
+        before: function (obj) {
+          //预读本地文件示例
+          obj.preview(function (index, file, result) {
+            console.log(file);
+            $("#demo2").append(
+              '<img src="' +
+                result +
+                '" alt="' +
+                file.name +
+                '" class="layui-upload-img" style="display:block;width:4rem;height:4rem;float:left;">'
+            );
+          });
+          console.log(obj);
+        },
+        done: function (res) {
+          //上传完毕
+        },
+      });
+    });
+  },
+  mounted() {
+    this.typedata();
   },
 };
 </script>

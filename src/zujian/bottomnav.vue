@@ -1,5 +1,12 @@
+<style lang="less" scoped>
+.van-tabbar {
+  height: 2.5rem;
+  max-width: 35rem;
+  margin: 0 auto;
+}
+</style>
 <template>
-  <div class="box" style="height: 2.5rem">
+  <div class="box">
     <van-tabbar v-model="active">
       <van-tabbar-item icon="friends-o" to="/helloworld">我的</van-tabbar-item>
       <van-tabbar-item icon="home-o" to="/index">首页</van-tabbar-item>
@@ -17,3 +24,4 @@ export default {
   },
 };
 </script>
+

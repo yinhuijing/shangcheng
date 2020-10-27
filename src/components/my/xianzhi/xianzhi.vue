@@ -79,7 +79,7 @@ export default {
       this.$router.go(-1);
     },
     home() {
-      this.$router.push({ path: "/shop" });
+      this.$router.push({ path: "/index" });
     },
     change_page() {
       if (this.zxlist.length == "") {
