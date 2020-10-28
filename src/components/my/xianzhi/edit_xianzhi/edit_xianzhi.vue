@@ -95,17 +95,6 @@
     }
   }
 }
-
-
-.upload{
-  height: 5rem;
-}
-#upload{
-   width: 3rem;
-   height: 2rem;
-   padding: 0;
-   margin-left: 1rem;
-}
 </style>
 
 <template>
@@ -114,7 +103,7 @@
       <div class="head_back_box">
         <div class="head_back" @click="back"></div>
       </div>
-      <div class="head_title">添加闲置物品</div>
+      <div class="head_title">修改闲置信息</div>
       <div class="head_home" @click="home"></div>
     </div>
 
@@ -180,6 +169,26 @@
           </div>
         </div>
 
+        <!-- <div class="layui-form-item">
+          <label class="layui-form-label">闲置物品详情：</label>
+          <div class="layui-input-inline uploadHeadImage">
+            <div class="layui-upload-drag" id="headImg">
+              <i class="layui-icon"></i>
+              <p>点击上传图片，或将图片拖拽到此处</p>
+            </div>
+          </div>
+          <div class="layui-input-inline">
+            <div class="layui-upload-list">
+              <img
+                class="layui-upload-img headImage"
+                src="http://t.cn/RCzsdCq"
+                id="demo1"
+              />
+              <p id="demoText"></p>
+            </div>
+          </div>
+        </div> -->
+
         <div class="layui-form-item layui-form-text">
           <label class="layui-form-label">闲置理由：</label>
           <div class="layui-input-block">
@@ -190,7 +199,6 @@
             ></textarea>
           </div>
         </div>
-
         <div class="layui-form-item">
           <div class="layui-input-block">
             <button
@@ -217,9 +225,8 @@ export default {
   data() {
     return {
       add_xianzhi: {}, // 闲置物品名称，类型，理由
-      typeList: {}, // 闲置类型
+      typeList: {},
       fileList: [],
-      xzimg:"", // 闲置图片
     };
   },
   methods: {
@@ -229,12 +236,11 @@ export default {
     home() {
       this.$router.push({ path: "/index" });
     },
-    // 闲置类型
     typedata() {
       this.$axios.post("/Idle/typeIdle").then((res) => {
         // console.log(res.data.data);
         this.typeList = res.data.data;
-        // console.log(this.typeList);
+        console.log(this.typeList);
       });
     },
   },
@@ -252,33 +258,23 @@ export default {
         return false;
       });
 
-      // 多图片上传
-      upload.render({
+      //上传图片
+      var uploadInst = upload.render({
         elem: "#upload",
-        url: "http://www.upperstu.com/api/User/uploadImg", //自己的上传接口
-        methods: "post",
-        multiple: true,
-        enctype: "multipart/form-data",
+        url: "/User/uploadImg", //改成您自己的上传接口
+        multipart:"form-data",
         before: function (obj) {
-          //预读本地文件示例
+          //预读本地文件示例，不支持ie8
           obj.preview(function (index, file, result) {
-            
             $("#demo1").attr("src", result); //图片链接（base64）
-            $("#demo1").css({
-              width: "4rem",
-              height: "4rem",
-              display: "block",
-              paddingLeft: "1rem",
-            }); //图片样式
           });
         },
         done: function (res) {
-          if (res.code == 200) {
-            return layer.msg("上传成功");
-            console.log("图片地址："+data.src);
+          //如果上传失败
+          if (res.code > 0) {
+            return layer.msg("上传失败");
           }
           //上传成功
-          
         },
         error: function () {
           //演示失败状态，并实现重传
@@ -289,6 +285,67 @@ export default {
           demoText.find(".demo-reload").on("click", function () {
             uploadInst.upload();
           });
+        },
+      });
+
+      // var uploadInst = upload.render({
+      //   elem: "#headImg",
+      //   url: "/User/uploadImg",
+      //   size: 500,
+      //   before: function (obj) {
+      //     //预读本地文件示例，不支持ie8
+      //     obj.preview(function (index, file, result) {
+      //       $("#demo1").attr("src", result); //图片链接（base64）
+      //     });
+      //   },
+      //   done: function (res) {
+      //     //如果上传失败
+      //     if (res.code > 0) {
+      //       return layer.msg("上传失败");
+      //     }
+      //     //上传成功
+      //     //打印后台传回的地址: 把地址放入一个隐藏的input中, 和表单一起提交到后台, 此处略..
+      //     /*   console.log(res.data.src);*/
+      //     window.parent.uploadHeadImage(res.data.src);
+      //     var demoText = $("#demoText");
+      //     demoText.html('<span style="color: #8f8f8f;">上传成功!!!</span>');
+      //   },
+      //   error: function () {
+      //     //演示失败状态，并实现重传
+      //     var demoText = $("#demoText");
+      //     demoText.html(
+      //       '<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-mini demo-reload">重试</a>'
+      //     );
+      //     demoText.find(".demo-reload").on("click", function () {
+      //       uploadInst.upload();
+      //     });
+      //   },
+      // });
+      // element.init();
+
+      // 多图片上传
+      upload.render({
+        elem: "#test2",
+        url: "/User/uploadImg", //自己的上传接口
+        methods: "post",
+        // data: { file:this.file }, // 接口参数
+        multiple: true,
+        before: function (obj) {
+          //预读本地文件示例
+          obj.preview(function (index, file, result) {
+            console.log(file);
+            $("#demo2").append(
+              '<img src="' +
+                result +
+                '" alt="' +
+                file.name +
+                '" class="layui-upload-img" style="display:block;width:4rem;height:4rem;float:left;">'
+            );
+          });
+          console.log(obj);
+        },
+        done: function (res) {
+          //上传完毕
         },
       });
     });

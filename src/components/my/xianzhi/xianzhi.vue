@@ -32,7 +32,7 @@
 .wupin_list {
   margin-top: 1rem;
   font-size: 0.75rem;
-  display: none;
+  display: block;
   a {
     text-decoration: underline;
     color: red;
@@ -41,6 +41,86 @@
 
 .xianzih_list {
   display: none;
+  width: 100%;
+  height: 7rem;
+  background-color: #fff;
+  margin-bottom: 0.5rem;
+  .xianzhi_main {
+    width: 100%;
+    height: 100%;
+    padding: 1rem;
+    box-sizing: border-box;
+    .xzmain_top {
+      width: 100%;
+      height: 4rem;
+      .xzmain_pic {
+        width: 4rem;
+        height: 100%;
+        float: left;
+        img {
+          display: block;
+          width: 100%;
+          height: 100%;
+        }
+      }
+      .xzmain_text {
+        text-align: left;
+        width: calc(100% - 4rem);
+        height: 100%;
+        float: left;
+        div {
+          padding-left: 1rem;
+          box-sizing: border-box;
+          font-size: 0.8rem;
+        }
+        .xz_height {
+          height: 1.5rem;
+          line-height: 1.5rem;
+        }
+        .xzmain_title {
+          color: orange;
+        }
+        .xzmain_edit {
+          text-align: right;
+          font-size: 0.75rem;
+        }
+        .go_xzxq {
+          height: 1rem;
+          line-height: 1rem;
+          a {
+            font-size: 0.7rem;
+            color: red;
+            text-decoration: underline;
+          }
+        }
+      }
+    }
+    .xzmain_bottom {
+      height: 1rem;
+      line-height: 1rem;
+      text-align: right;
+    }
+  }
+}
+
+.bottom_box {
+  display: none;
+  height: 1.5rem;
+  width: 100%;
+  position: fixed;
+  bottom: 0.5rem;
+  left: 0;
+  a {
+    display: block;
+    width: 5rem;
+    height: 100%;
+    background-color: orange;
+    padding: 0.3rem;
+    box-sizing: border-box;
+    margin: 0 auto;
+    border-radius: 0.8rem;
+    color: white;
+  }
 }
 </style>
 
@@ -59,8 +139,27 @@
       <a href="/add_xianzhi">请添加</a>
     </div>
 
-    <div class="xianzih_list" v-for="(item, index) in zxlist" :key="index">
-      <a href="">{{ item.name }}</a>
+    <div class="xianzih_list" v-for="(item, index) in zxlist[0]" :key="index">
+      <div class="xianzhi_main">
+        <div class="xzmain_top">
+          <div class="xzmain_pic">
+            <img :src="item.cover" alt="" />
+          </div>
+          <div class="xzmain_text">
+            <div class="xzmain_title xz_height">{{ item.title }}</div>
+            <div class="xzmain_edit xz_height">
+              <span @click="edit_xzmsg">编辑</span> |
+              <span @click="delete_xzmsg">删除</span>
+            </div>
+            <div class="go_xzxq"><a href="###">查看详情</a></div>
+          </div>
+        </div>
+        <div class="xzmain_bottom">{{ item.created_at }}</div>
+      </div>
+    </div>
+
+    <div class="bottom_box">
+      <a href="/add_xianzhi">添加闲置</a>
     </div>
   </div>
 </template>
@@ -81,16 +180,34 @@ export default {
     home() {
       this.$router.push({ path: "/index" });
     },
-    change_page() {
-      if (this.zxlist.length == "") {
-        $(".wupin_list").css("display", "block");
-      } else {
-        $(".xianzih_list").css("display", "block");
-      }
+    edit_xzmsg() {
+      this.$router.push({ path: "edit_xianzhi" });
+    },
+    delete_xzmsg() {
+      console.log("删除成功");
+      // this.$axios.post("/Idle/delIdle", { id: 5 }).then((res) => {
+      //   console.log(res)
+      // });
+    },
+    huoquData() {
+      this.$axios.post("/Idle/showIdle", { pageNumber: 1 }).then((res) => {
+        // console.log(res.data.data);
+        this.zxlist.push(res.data.data);
+        console.log(this.zxlist);
+        if (this.zxlist.length == 0) {
+          $(".wupin_list").css("display", "block");
+          $(".xianzih_list").css("display", "none");
+          $(".bottom_box").css("display", "none");
+        } else {
+          $(".wupin_list").css("display", "none");
+          $(".xianzih_list").css("display", "block");
+          $(".bottom_box").css("display", "block");
+        }
+      });
     },
   },
   mounted() {
-    this.change_page();
+    this.huoquData();
   },
 };
 </script>

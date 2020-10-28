@@ -36,6 +36,10 @@ const r = [{
     name: 'add_xianzhi',
     component: require('../components/my/xianzhi/add_xianzhi/add_xianzhi.vue').default
 }, {
+    path: '/edit_xianzhi',
+    name: 'edit_xianzhi',
+    component: require('../components/my/xianzhi/edit_xianzhi/edit_xianzhi.vue').default
+}, {
     path: '/index',
     name: 'index',
     component: require('../components/index/index.vue').default,
