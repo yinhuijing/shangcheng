@@ -63,7 +63,8 @@
       border: none;
       height: 1rem;
       margin: 0.3rem;
-      margin-left: 0.3rem;
+      margin-left: 1rem;
+      margin-top: 0;
       legend {
         font-size: 0.7rem;
         text-align: left;
@@ -74,11 +75,11 @@
     .layui-upload {
       .layui-btn {
         margin-top: 0.5rem;
-        margin-left: -11rem;
+        margin-left: -11.5rem;
       }
       .layui-elem-quote {
         text-align: left;
-        margin: 0;
+        margin-left: 1rem;
         padding: 0;
         border: none;
         .layui-upload-list {
@@ -96,15 +97,8 @@
   }
 }
 
-
-.upload{
+.upload {
   height: 5rem;
-}
-#upload{
-   width: 3rem;
-   height: 2rem;
-   padding: 0;
-   margin-left: 1rem;
 }
 </style>
 
@@ -151,33 +145,24 @@
           </div>
         </div>
 
-        <!-- <fieldset
+        <fieldset
           class="layui-elem-field layui-field-title"
           style="margin-top: 30px"
         >
-          <legend>上传多张图片</legend>
+          <legend>上传多张图片（最多四张）</legend>
         </fieldset>
 
         <div class="layui-upload">
-          <button type="button" class="layui-btn" id="test2">多图片上传</button>
+          <button type="button" class="layui-btn" id="upload">
+            多图片上传
+          </button>
           <blockquote
             class="layui-elem-quote layui-quote-nm"
             style="margin-top: 10px"
           >
             预览图：
-            <div class="layui-upload-list" id="demo2"></div>
+            <div class="layui-upload-list" id="demo1"></div>
           </blockquote>
-        </div> -->
-
-        <div class="layui-upload upload">
-          <button type="button" class="layui-form-label" id="upload">
-            上传图片
-          </button>
-          <input class="layui-upload-file" type="file" accept="" name="file" />
-          <div class="layui-upload-list">
-            <img class="layui-upload-img" id="demo1" />
-            <p id="demoText"></p>
-          </div>
         </div>
 
         <div class="layui-form-item layui-form-text">
@@ -218,8 +203,7 @@ export default {
     return {
       add_xianzhi: {}, // 闲置物品名称，类型，理由
       typeList: {}, // 闲置类型
-      fileList: [],
-      xzimg:"", // 闲置图片
+      // fileList: [],
     };
   },
   methods: {
@@ -249,36 +233,40 @@ export default {
       form.on("submit(formDemo)", function (data) {
         this.add_xianzhi = JSON.stringify(data.field);
         console.log(this.add_xianzhi);
+        console.log(this.add_xianzhi.city);
         return false;
+        // this.$axios.post("/Idle/addIdle",{
+        //   title:this.add_xianzhi.title,
+        //   describe:this.add_xianzhi.desc,
+        // })
       });
 
       // 多图片上传
       upload.render({
         elem: "#upload",
-        url: "http://www.upperstu.com/api/User/uploadImg", //自己的上传接口
+        url: "http://www.upperstu.com/api/User/uploadPhoto", //自己的上传接口
         methods: "post",
         multiple: true,
         enctype: "multipart/form-data",
         before: function (obj) {
           //预读本地文件示例
           obj.preview(function (index, file, result) {
-            
-            $("#demo1").attr("src", result); //图片链接（base64）
-            $("#demo1").css({
-              width: "4rem",
-              height: "4rem",
-              display: "block",
-              paddingLeft: "1rem",
-            }); //图片样式
+            $("#demo1").append(
+              '<img src="' +
+                result +
+                '" alt="' +
+                file.name +
+                '" class="layui-upload-img" style="padding-right:0.4rem;float:left;width:4rem;height:4rem;display:block;">'
+            );
           });
         },
         done: function (res) {
+          console.log(res);
           if (res.code == 200) {
             return layer.msg("上传成功");
-            console.log("图片地址："+data.src);
+            console.log("图片地址：" + data);
           }
           //上传成功
-          
         },
         error: function () {
           //演示失败状态，并实现重传

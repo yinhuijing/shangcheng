@@ -32,7 +32,6 @@
 .wupin_list {
   margin-top: 1rem;
   font-size: 0.75rem;
-  display: block;
   a {
     text-decoration: underline;
     color: red;
@@ -40,7 +39,6 @@
 }
 
 .xianzih_list {
-  display: none;
   width: 100%;
   height: 7rem;
   background-color: #fff;
@@ -104,7 +102,6 @@
 }
 
 .bottom_box {
-  display: none;
   height: 1.5rem;
   width: 100%;
   position: fixed;
@@ -143,7 +140,7 @@
       <div class="xianzhi_main">
         <div class="xzmain_top">
           <div class="xzmain_pic">
-            <img :src="item.cover" alt="" />
+            <img :src="yum + item.cover" alt="" />
           </div>
           <div class="xzmain_text">
             <div class="xzmain_title xz_height">{{ item.title }}</div>
@@ -166,11 +163,13 @@
 
 <script>
 import $ from "jquery";
+import yum from "../../../../data/yum";
 export default {
   data() {
     return {
       zxlist: [],
       showList: true,
+      yum: "",
     };
   },
   methods: {
@@ -205,9 +204,15 @@ export default {
         }
       });
     },
+    fun() {
+      this.yum = yum.utils.photoPrefix;
+    },
   },
   mounted() {
     this.huoquData();
+  },
+  beforeMount() {
+    this.fun();
   },
 };
 </script>

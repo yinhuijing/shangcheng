@@ -241,37 +241,6 @@
             </div>
           </div>
         </a>
-        <div class="load-more"><a href="###">点击加载更多</a></div>
-        <!-- <van-list
-          v-model="loading"
-          :finished="finished"
-          finished-text="没有更多了"
-          @load="onLoad"
-        >
-          <van-row>
-            <van-col span="12" class="pic-box">
-              <a href="###" class="content-main-good" @click="good_xq(item.id)">
-                <div class="img_box">
-                  <img :src="yum + item.cover" alt />
-                </div>
-                <div class="product_box">
-                  <div class="product_title">{{ item.name }}</div>
-                  <div class="product_price">
-                    <div class="price_list">
-                      <span class="xj_content">
-                        ¥
-                        <span>{{ item.price }}</span>
-                      </span>
-                      <span class="original_price"
-                        >¥{{ item.original_price }}</span
-                      >
-                    </div>
-                  </div>
-                </div>
-              </a>
-            </van-col>
-          </van-row>
-        </van-list> -->
       </div>
     </div>
 
@@ -288,10 +257,6 @@ export default {
     return {
       value: "",
       goodlist: [],
-      // page:1,
-      // page_count:''
-      // finished: false,
-      // loading: false,
     };
   },
   components: {
@@ -335,51 +300,6 @@ export default {
   },
   mounted() {
     this.get_good();
-    // layui.use("flow", () => {
-    //   var $ = layui.jquery;
-    //   var flow = layui.flow;
-    //   flow.load({
-    //     elem: "#LAY_demo2", //流加载容器
-    //     scrollElem: "#LAY_demo2",
-    //     done: function (page, next) {
-    //       //到达临界点（默认滚动触发），触发下一页
-    //       setTimeout(function () {
-    //         var lis = [];
-    //         //以jQuery的Ajax请求为例，请求下一页数据（注意：page是从2开始返回）
-    //         $.post("/Goods/getGoods", { page: page }, function () {
-    //           //假设你的列表返回在data集合中
-    //           console.log(res);
-    //           layui.each(res.data, function (index, item) {
-    //             lis.push(
-    //               "<li><a href='/good_xq' class='content-main-good'><div class='img_box'><imgsrc=" +
-    //                 item.cover +
-    //                 "alt/></div><div class='product_box'><div class='product_title'>" +
-    //                 item.name +
-    //                 "</div><div class='product_pric'><div class='price_list'><span class='jumei_price'>¥<span>" +
-    //                 item.price +
-    //                 "</span></span></div></div></div></a></li>"
-    //             );
-    //           });
-    //           // layui.each(res.data.data.data, (index, item) => {
-    //           //   lis.push(
-    //           //     "<li><a href='/good_xq' class='content-main-good'><div class='img_box'><imgsrc=" +
-    //           //       item.cover +
-    //           //       "alt/></div><div class='product_box'><div class='product_title'>" +
-    //           //       item.name +
-    //           //       "</div><div class='product_pric'><div class='price_list'><span class='jumei_price'>¥<span>" +
-    //           //       item.price +
-    //           //       "</span></span></div></div></div></a></li>"
-    //           //   );
-    //           // });
-    //           //执行下一页渲染，第二参数为：满足“加载更多”的条件，即后面仍有分页
-    //           //pages为Ajax返回的总页数，只有当前页小于总页数的情况下，才会继续出现加载更多
-    //           next(lis.join(), page < res.count);
-    //           $('[data-toggle="tooltip"]').tooltip();
-    //         });
-    //       });
-    //     },
-    //   });
-    // });
   },
 };
 </script>
