@@ -88,7 +88,7 @@
       <div class="setup-li" @click="jump('add_school')">
         <div class="set-up-left">学校</div>
         <div class="set-up-right">
-          {{ school }}
+          {{ school_name }}
           <img class="rightimg" src="../../assets/img/8.png" alt="" />
         </div>
       </div>
@@ -158,16 +158,16 @@ export default {
     return {
       checked: true,
       sid: "",
-      school: "",
+      school_name: "",
       tjr: "",
     };
   },
   methods: {
     back() {
-      this.$router.go(-1);
+      this.$router.push({ path: "/helloworld" });
     },
     home() {
-      this.$router.push({ path: "/shop" });
+      this.$router.push({ path: "/index" });
     },
     jump(e) {
       console.log(e);
@@ -186,25 +186,38 @@ export default {
           console.log(err);
         });
     },
-    // getschool() {
+    // edit_school() {
     //   this.$axios
-    //     .post("/User/getoneSchool", { school: this.sid })
+    //     .post("/User/updateSchool", { school: this.sid })
     //     .then((res) => {
     //       console.log(res);
-    //       console.log(res.data.data[0].name);
-    //       this.school = res.data.data[0].name;
     //     })
     //     .catch((err) => {
     //       console.log(err);
     //     });
     // },
+    getChool() {
+      this.$axios
+        .post("/User/getoneSchool", { school: this.sid })
+        .then((res) => {
+          console.log(res.data.data);
+          this.xz_schoolList = res.data.data;
+          this.school_name = this.xz_schoolList[0].name;
+          // console.log(this.xz_schoolList[0].id);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    },
   },
   created() {
     this.sid = this.$route.query.id;
+    // this.school_name = this.$route.query.name;
   },
   mounted() {
     this.gettjr();
-    // this.getschool();
+    // this.edit_school();
+    this.getChool();
   },
 };
 </script>

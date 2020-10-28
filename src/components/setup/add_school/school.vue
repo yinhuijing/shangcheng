@@ -80,8 +80,6 @@
     </div>
 
     <div class="qued"><a href="###" @click="qued">保存学校</a></div>
-
-    <div @click="aa">啊啊啊啊啊啊啊啊</div>
   </div>
 </template>
 
@@ -92,13 +90,10 @@ export default {
     return {
       value: "",
       schoolList: [], // 学校列表
-      // xz_school:"" // 学校id
+      xz_schoolList: "", // 学校id
     };
   },
   methods: {
-    // back() {
-    //   this.$router.go(-1);
-    // },
     home() {
       this.$router.push({ path: "/index" });
     },
@@ -108,22 +103,41 @@ export default {
         .then((res) => {
           // console.log(res.data.data);
           this.schoolList = res.data.data;
-          console.log(this.schoolList);
+          // console.log(this.schoolList);
         })
         .catch((err) => {
           console.log(err);
         });
     },
     xzschool(xid) {
-      console.log(xid);
-      this.xz_school = xid;
-      console.log(this.xz_school);
-    },
-    aa() {
-      console.log(this.xz_school);
+      this.xz_schoolList = xid;
+      this.$axios
+        .post("/User/updateSchool", { school: xid })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+      // this.$axios
+      //   .post("/User/getoneSchool", { school: xid })
+      //   .then((res) => {
+      //     // console.log(res.data.data);
+      //     this.xz_schoolList = res.data.data;
+      //     // console.log(this.xz_schoolList[0].id);
+      //   })
+      //   .catch((err) => {
+      //     console.log(err);
+      //   });
     },
     qued() {
-      this.$router.push({ path: "/setup", query: { id: this.xz_school } });
+      this.$router.push({
+        path: "/setup",
+        query: {
+          id: this.xz_schoolList,
+          // name: this.xz_schoolList[0].name,
+        },
+      });
     },
   },
   mounted() {
